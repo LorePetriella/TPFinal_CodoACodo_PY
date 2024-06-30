@@ -106,7 +106,7 @@ class GestorCandidatos:
 #PROGRAMA PRINCIPAL
 
 #instancio Gestor
-gestor_candidatos = GestorCandidatos(host='lorepetriella.mysql.pythonanywhere-services.com', user='lorepetriella', password='codo78',database='lorepetriella$gestor_candidatos_coro')
+gestor_candidatos = GestorCandidatos(host='lorepetriella.mysql.pythonanywhere-services.com', user='lorepetriella', password='CODO78',database='lorepetriella$gestor_candidatos_coro')
 
 # Manejar solicitud OPTIONS para la ruta /candidatos/
 @app.route('/candidatos/', methods=['OPTIONS'])
