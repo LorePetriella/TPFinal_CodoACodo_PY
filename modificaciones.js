@@ -1,8 +1,8 @@
-//            -------------------------------------------------------------------------------------
-//                                 Script para Mofificar Candidatos (UPDATE)
-//            -------------------------------------------------------------------------------------
+// //            -------------------------------------------------------------------------------------
+// //                                 Script para Mofificar Candidatos (UPDATE)
+// //            -------------------------------------------------------------------------------------
 const URL = "https://lorepetriella.pythonanywhere.com/";
-// Variables de estado para controlar la visibilidad y los datos del formulario
+
 let codigo = "";
 let nombre = "";
 let apellido = "";
@@ -21,12 +21,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("form-guardar-cambios")
     .addEventListener("submit", guardarCambios);
 });
-// Se ejecuta cuando se envía el formulario de consulta. Realiza una solicitud GET a la API y obtiene los datos del producto correspondiente al código ingresado.
+
 function obtenerCandidato(event) {
   event.preventDefault();
-  code = document.getElementById("codigo").value;
-  console.log(code)
-  fetch(URL + "candidatos/" + code)
+  codigo = document.getElementById("codigo").value;
+  fetch(URL + "candidatos/" + codigo)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -35,15 +34,15 @@ function obtenerCandidato(event) {
       }
     })
     .then((data) => {
-      codigo = data.codigo
+      codigo = data.codigo;
       nombre = data.nombre;
       apellido = data.apellido;
       email = data.email;
       cuerda = data.cuerda;
-      experiencia = data.experiencia;
-      lectura = data.lectura;
-      estudios = data.estudios;
-      mostrarDatosCandidato = true; //Activa la vista del segundo formulario
+      experiencia = data.experiencia.toString(); 
+      lectura = data.lectura.toString(); 
+      estudios = data.estudios.toString(); 
+      mostrarDatosCandidato = true;
 
       mostrarFormulario();
     })
@@ -51,72 +50,46 @@ function obtenerCandidato(event) {
       alert("Código no encontrado.");
     });
 }
-// Muestra el formulario con los datos del producto
+
 function mostrarFormulario() {
-    if (mostrarDatosCandidato) {
-        document.getElementById('modificarNombre').value = nombre;
-        document.getElementById('modificarApellido').value = apellido;
-        document.getElementById('modificarEmail').value = email;
-        document.getElementById('modificarCuerda').value = cuerda;
-        // Configurar radio buttons para experiencia
-        if (experiencia === 'SI') {
-            document.getElementById('modificarExpSi').checked = true;
-        } else if (experiencia === 'NO') {
-            document.getElementById('modificarExpNo').checked = true;
-        }
+  if (mostrarDatosCandidato) {
+    document.getElementById("modificarNombre").value = nombre;
+    document.getElementById("modificarApellido").value = apellido;
+    document.getElementById("modificarEmail").value = email;
+    document.getElementById("modificarCuerda").value = cuerda;
 
-        // Configurar radio buttons para lectura
-        if (lectura === 'SI') {
-            document.getElementById('modificarLecturaSi').checked = true;
-        } else if (lectura === 'NO') {
-            document.getElementById('modificarLecturaNo').checked = true;
-        }
+    // Configurar radio buttons para experiencia
+    document.getElementById("modificarExpSi").checked = experiencia === "1";
+    document.getElementById("modificarExpNo").checked = experiencia === "0";
 
-        // Configurar radio buttons para estudios
-        if (estudios === 'SI') {
-            document.getElementById('modificarEstudiosSi').checked = true;
-        } else if (estudios === 'NO') {
-            document.getElementById('modificarEstudiosNo').checked = true;
-        }
+    // Configurar radio buttons para lectura
+    document.getElementById("modificarLecturaSi").checked = lectura === "1";
+    document.getElementById("modificarLecturaNo").checked = lectura === "0";
 
-        document.getElementById('datos-candidato').classList.remove('visually-hidden'); 
-        
-        document.getElementById('getByCode').classList.add('visually-hidden');
-    
-    } else {
-        document.getElementById('datos-candidato').classList.add('visually-hidden');
-    
-    }
+    // Configurar radio buttons para estudios
+    document.getElementById("modificarEstudiosSi").checked = estudios === "1";
+    document.getElementById("modificarEstudiosNo").checked = estudios === "0";
+
+    document.getElementById("datos-candidato").classList.remove("visually-hidden");
+    document.getElementById("getByCode").classList.add("visually-hidden");
+  } else {
+    document.getElementById("datos-candidato").classList.add("visually-hidden");
+  }
 }
 
-
-// Se usa para enviar los datos modificados del producto al servidor.
 function guardarCambios(event) {
   event.preventDefault();
   const formData = new FormData();
   formData.append("codigo", codigo);
   formData.append("nombre", document.getElementById("modificarNombre").value);
-  formData.append(
-    "apellido",
-    document.getElementById("modificarApellido").value
-  );
+  formData.append("apellido", document.getElementById("modificarApellido").value);
   formData.append("email", document.getElementById("modificarEmail").value);
   formData.append("cuerda", document.getElementById("modificarCuerda").value);
-  // Obtener valor de experiencia
-  const experiencia = document.querySelector(
-    'input[name="experiencia"]:checked'
-  ).value;
-  formData.append("experiencia", experiencia);
+  formData.append("experiencia", document.querySelector('input[name="experiencia"]:checked').value);
+  formData.append("lectura", document.querySelector('input[name="lectura"]:checked').value);
+  formData.append("estudios", document.querySelector('input[name="estudios"]:checked').value);
 
-  // Obtener valor de lectura
-  const lectura = document.querySelector('input[name="lectura"]:checked').value;
-  formData.append("lectura", lectura);
 
-  // Obtener valor de estudios
-  const estudios = document.querySelector(
-    'input[name="estudios"]:checked'
-  ).value;
-  formData.append("estudios", estudios);
 
   fetch(URL + "candidatos/" + codigo, {
     method: "PUT",
@@ -129,39 +102,29 @@ function guardarCambios(event) {
         throw new Error("Error al guardar los cambios del candidato.");
       }
     })
-
     .then((data) => {
       alert("Candidato actualizado correctamente.");
       limpiarFormulario();
     })
-
     .catch((error) => {
       console.error("Error:", error);
       alert("Error al actualizar el candidato.");
     });
 }
-// Restablece todas las variables relacionadas con el formulario     a sus valores iniciales, lo que efectivamente "limpia" el formulario.
+
 function limpiarFormulario() {
-//   document.getElementById("codigo").value = "";
   document.getElementById("modificarNombre").value = "";
   document.getElementById("modificarApellido").value = "";
   document.getElementById("modificarEmail").value = "";
   document.getElementById("modificarCuerda").value = "";
-  // Función para vaciar los elementos de radio de una categoría específica
-  function resetRadioButtons(radioName) {
-    // Selecciona todos los elementos de radio con el mismo nombre
-    const radios = document.querySelectorAll('input[name="' + radioName + '"]');
 
-    // Itera sobre cada elemento de radio y lo deselecciona
-    radios.forEach(function (radio) {
-      radio.checked = false;
-    });
-  }
-
-  // Llamar a la función para vaciar los elementos de radio
-  resetRadioButtons("experiencia");
-  resetRadioButtons("lectura");
-  resetRadioButtons("estudios");
+  // Limpiar radio buttons
+  document.getElementById("modificarExpSi").checked = false;
+  document.getElementById("modificarExpNo").checked = false;
+  document.getElementById("modificarLecturaSi").checked = false;
+  document.getElementById("modificarLecturaNo").checked = false;
+  document.getElementById("modificarEstudiosSi").checked = false;
+  document.getElementById("modificarEstudiosNo").checked = false;
 
   codigo = "";
   nombre = "";
@@ -173,7 +136,6 @@ function limpiarFormulario() {
   estudios = "";
   mostrarDatosCandidato = false;
 
-  document.getElementById('datos-candidato').classList.add('visually-hidden');
-  document.getElementById('getByCode').classList.remove('visually-hidden');
-  
+  document.getElementById("datos-candidato").classList.add("visually-hidden");
+  document.getElementById("getByCode").classList.remove("visually-hidden");
 }
