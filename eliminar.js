@@ -30,10 +30,10 @@ row.innerHTML = `
 <td>${candidato.apellido}</td>
 <td>${candidato.email}</td>
 <td>${candidato.cuerda}</td>
-<td>${candidato.experiencia}</td>
-<td>${candidato.lectura}</td>
-<td>${candidato.estudios}</td>  
-<td><button class="btn btn-dark" onclick="eliminarCandidato('${candidato.codigo}')">Eliminar</button></td>
+<td>${(candidato.experiencia === 1 ? 'Si' : 'No')}</td>
+<td>${(candidato.lectura === 1 ? 'Si' : 'No')}</td>
+<td>${(candidato.estudios === 1 ? 'Si' : 'No')}</td> 
+<td><button class="btn btn-dark btn-sm m-1" onclick="eliminarCandidato('${candidato.codigo}')">Eliminar</button></td>
 `;
 });
 })

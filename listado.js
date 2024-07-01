@@ -39,13 +39,13 @@ fetch(URL + "candidatos")
         candidato.cuerda +
         "</td>" +
         '<td>' +
-        candidato.experiencia +
+        (candidato.experiencia === 1 ? 'Si' : 'No')  +
         "</td>" +
         '<td>' +
-        candidato.lectura +
+        (candidato.lectura === 1 ? 'Si' : 'No') +
         "</td>" +
         '<td>' +
-        candidato.estudios +
+        (candidato.estudios === 1 ? 'Si' : 'No')  +
         "</td>";
 
       //Una vez que se crea la fila con el contenido del producto, se agrega a la tabla utilizando el método appendChild del elemento tablaProductos.
